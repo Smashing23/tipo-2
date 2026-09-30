@@ -26,12 +26,18 @@ async function searchGoogleShopping(q, condition) {
   });
   const r = await fetch(`https://serpapi.com/search.json?${params}`);
   const data = await r.json();
+  if (data.error && /any results/i.test(data.error)) return [];
   if (!r.ok || data.error) throw new Error(data.error || 'Errore Google Shopping');
-  return (data.shopping_results || []).slice(0, 6).map(it => ({
+  const list = [
+    ...(data.shopping_results || []),
+    ...(data.inline_shopping_results || []),
+    ...((data.categorized_shopping_results || []).flatMap(c => c.shopping_results || []))
+  ];
+  return list.slice(0, 8).map(it => ({
     title: it.title,
-    image: it.thumbnail || null,
-    price: it.price || null,
-    url: it.product_link || it.link,
+    image: it.thumbnail || it.serpapi_thumbnail || (Array.isArray(it.thumbnails) ? it.thumbnails[0] : null) || null,
+    price: it.price || (it.extracted_price ? `${it.extracted_price} €` : null),
+    url: it.product_link || it.link || (it.product_id ? `https://www.google.it/shopping/product/${it.product_id}` : null),
     source: it.source || 'Negozio'
   }));
 }
