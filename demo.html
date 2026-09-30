@@ -80,6 +80,14 @@ const DEMOS = [
    {name:'Sneakers platform', items:[{s:'Lacoste',p:'100,00 €',img:'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRNyPARs84PuszPDCmUaH1xCBHX8UzgsoMa2l-sRiTdc4WpCYTo0veMcLbZ5wUKpQDDG5rplx0ntsV2JnvV8YWQYMZMGLJ4N1x2VDL9VmnbFJag3Dc4GPR26kg'},{s:'Bershka',p:'29,99 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTEkMi2uAdu3aQq4cfPGt36vUXlyEWxVf9CaGSl3AMvNVpnujCNamBXUPdKgpvyyjP-eDfwAvaab3ccQXhp-hAR7Y__-RPILPl28hCLUXTwnAUsbb_Ju5836aiA'}]}
   ]}
 ];
+const EN = new URLSearchParams(location.search).get('lang') === 'en';
+if (EN) {
+  const q = ["I love how The Hellp dress, the American electronic duo", "I want to dress like Charli XCX, brat era", "I love Bb Trickz's style, the Barcelona rapper"];
+  const names = [["Mesh top","Baggy cargos","Chunky sneakers"],["White crop top","Platform boots","Lime green bag"],["Pink oversized hoodie","Parachute cargos","Platform sneakers"]];
+  DEMOS.forEach((d,i) => { d.q = q[i]; d.pieces.forEach((p,j) => p.name = names[i][j]); });
+  document.documentElement.lang = 'en';
+}
+const L = EN ? {cta:'Find my type →', loading:'Studying your type…', your:'YOUR TYPE IS', found:n => `The pieces · ${n} found`, side1:'Tipo · demo with real searches', side2:'Dress like who you follow', note:'Real Tipo results (Gemini + Google Shopping), recorded 30/09/2026.'} : {cta:'Trova il mio tipo →', loading:'Sto studiando il tuo tipo…', your:'IL TUO TIPO È', found:n => `I capi · ${n} trovati`};
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const img = u => '/api/img?u=' + encodeURIComponent(u);
@@ -102,15 +110,15 @@ async function play(){
   const S = $('#screen');
   S.innerHTML = `<div class="top"><span class="logo"><span>T</span><span>ipo</span></span><span class="tag">BETA</span></div>
     <div class="field" id="field"><span id="typed"></span><span class="caret"></span></div>
-    <div class="cta" id="cta">Trova il mio tipo →</div>
+    <div class="cta" id="cta">${L.cta}</div>
     <div class="status" id="status"></div>
-    <div class="vibe" id="vibe"><small>IL TUO TIPO È</small><b>${esc(d.style)}</b><div class="pal">${d.palette.map(c=>`<i style="background:${c}"></i>`).join('')}</div></div>
+    <div class="vibe" id="vibe"><small>${L.your}</small><b>${esc(d.style)}</b><div class="pal">${d.palette.map(c=>`<i style="background:${c}"></i>`).join('')}</div></div>
     <div id="list" style="display:flex;flex-direction:column;gap:10px"></div>`;
   const typed = $('#typed');
   for (let i = 1; i <= d.q.length; i++){ if (my !== run) return; typed.textContent = d.q.slice(0, i); await wait(reduced ? 0 : 38); }
   await wait(400); if (my !== run) return;
   $('#cta').classList.add('press'); await wait(160); $('#cta').classList.remove('press');
-  $('#status').textContent = 'Sto studiando il tuo tipo…';
+  $('#status').textContent = L.loading;
   await wait(1100); if (my !== run) return;
   $('#status').textContent = '';
   $('#field').style.minHeight = '0';
@@ -118,7 +126,7 @@ async function play(){
   await wait(700);
   const list = $('#list');
   const all = d.pieces.flatMap(p => p.items.map(i => ({...i, piece:p.name})));
-  list.innerHTML = `<div class="piece show">I capi · ${all.length} trovati</div><div class="grid">${all.map(i=>`<div class="prod"><div class="img"><img src="${img(i.img)}" alt="${esc(i.piece)}"></div><div class="s">${esc(i.piece)}</div><div class="s">${esc(i.s)}</div><div class="p">${esc(i.p)}</div></div>`).join('')}</div>`;
+  list.innerHTML = `<div class="piece show">${L.found(all.length)}</div><div class="grid">${all.map(i=>`<div class="prod"><div class="img"><img src="${img(i.img)}" alt="${esc(i.piece)}"></div><div class="s">${esc(i.piece)}</div><div class="s">${esc(i.s)}</div><div class="p">${esc(i.p)}</div></div>`).join('')}</div>`;
   for (const el of list.querySelectorAll('.prod')){ if (my !== run) return; el.classList.add('show'); await wait(220); }
   if (still) return;
   await wait(4200); if (my !== run) return;
