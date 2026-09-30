@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tipo · demo</title>
+<link rel="icon" type="image/png" href="/icon-192.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{--ink:#0A0A0A;--paper:#FFFFFF;--bg:#EDEDEA;--muted:#5A5A5A;--line:#E6E6E6;--display:'Archivo',Helvetica,Arial,sans-serif;--mono:'IBM Plex Mono',ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--display)}
+.stage{min-height:100vh;display:flex;align-items:center;justify-content:center;gap:48px;padding:24px;flex-wrap:wrap}
+.side{max-width:360px;display:flex;flex-direction:column;gap:14px}
+.side .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.side h1{margin:0;font-size:44px;line-height:.92;font-weight:900;text-transform:uppercase;font-variation-settings:"wdth" 75}
+.dots{display:flex;gap:8px}
+.dots button{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--ink);background:transparent;padding:8px 10px;cursor:pointer}
+.dots button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.phone{width:390px;max-width:100%;height:800px;border:12px solid var(--ink);border-radius:54px;background:var(--paper);overflow:hidden;position:relative;box-shadow:0 30px 60px rgba(0,0,0,.18)}
+.screen{position:absolute;inset:0;padding:40px 20px 20px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+.top{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--ink);padding-bottom:10px}
+.logo{display:inline-flex;border:2px solid var(--ink);font-weight:900;font-size:17px;line-height:1;text-transform:uppercase}
+.logo span{padding:4px 6px}.logo span:first-child{background:var(--ink);color:#fff}
+.tag{font-family:var(--mono);font-size:10px;border:1px solid var(--ink);padding:2px 6px}
+.field{border:2px solid var(--ink);padding:12px;font-size:15px;min-height:70px;line-height:1.35}
+.caret{display:inline-block;width:2px;height:16px;background:var(--ink);vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.cta{background:var(--ink);color:#fff;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:14px;transition:transform .15s}
+.cta.press{transform:scale(.97)}
+.status{font-family:var(--mono);font-size:11px;color:var(--muted);min-height:14px}
+.vibe{background:var(--ink);color:#fff;padding:16px;display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(12px);transition:all .5s}
+.vibe.show{opacity:1;transform:none}
+.vibe small{font-family:var(--mono);font-size:10px;color:#9A9A9A;letter-spacing:.06em}
+.vibe b{font-size:30px;line-height:.9;font-weight:900;text-transform:uppercase;font-variation-settings:"wdth" 72}
+.pal{display:flex;gap:4px}.pal i{flex:1;height:18px;border:1px solid #333}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
+.prod{display:flex;flex-direction:column;gap:3px;opacity:0;transform:translateY(10px);transition:all .45s}
+.prod.show{opacity:1;transform:none}
+.prod .img{aspect-ratio:1/1;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.prod img{width:100%;height:100%;object-fit:contain;padding:4px}
+.prod .s{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod .p{font-size:13px;font-weight:800}
+.piece{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;border-top:2px solid var(--ink);padding-top:6px;opacity:0;transition:opacity .4s}
+.piece.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="side">
+    <div class="eyebrow">Tipo · demo con ricerche vere</div>
+    <h1>Vestiti come chi segui</h1>
+    <div class="dots" id="dots"></div>
+    <div class="eyebrow" style="text-transform:none;letter-spacing:0">Risultati reali di Tipo (Gemini + Google Shopping), registrati il 30/09/2026.</div>
+  </div>
+  <div class="phone"><div class="screen" id="screen"></div></div>
+</div>
+<script>
+const DEMOS = [
+ {name:'The Hellp', q:'Mi piace come si vestono i The Hellp, il duo elettronico americano', style:'Cyber Sleaze Pop', palette:['#111111','#4A4A4A','#8B0000','#D3D3D3','#FFFFFF'],
+  pieces:[
+   {name:'Maglia a rete', items:[{s:'ASOS',p:'25,19 €',img:'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRQo64r3wcV8c0q-oX8Llde_xcLLReP8tJRSLfewv0e_ED_sdFBa3jYjRf6t7tAJ8_REeOam2BJ25F2lfqTK_4wI3oF6_rbt4ZNBWSqG3UrNV8g6IWQ90DLig'},{s:'ASOS',p:'12,99 €',img:'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSgqj1749ul6RbVFFl7J5XC4eHQ-owD6A_K5vX5rvgW_SPY1kdLpxjrtYc3d2ldM2PAX2M26fJFLCb6OOxoZ_O-8O042L7S4EZl2yo5x0wNPyOtZzhvMYZh'}]},
+   {name:'Cargo baggy', items:[{s:'Pull&Bear',p:'21,59 €',img:'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTzh7Nq7Aa2eErjjUoOUGL9ti5Qn9lLOXijQMENxTakkMlWolBA7rMDAMGUxbC-sQKH8ZaWth52IQ'},{s:'Pull&Bear',p:'35,99 €',img:'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRh2cGaaydO4MyGll6lzXOoKCFO3uWPpTPOUayjVKi5Pich7Uv19asw3R8mcm4jBKYEgSJxonCX'}]},
+   {name:'Sneakers chunky', items:[{s:'ASOS',p:'119,99 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQd2_N1NJG7HYBnQ3pwAiOn7QzKjSa3AGQ6GvsMRqG5OZWkidkjLA0kH9ffpnOFhKb-A6WJAdk7RbtwIx4lEzgWOt9THHDBGodeAPjuvlL3qp6il_BElOAV0w'},{s:'ASOS',p:'129,99 €',img:'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTRxRmOXXlYL7Gc5OMc5AntTcqEsx-Ujfk58sDXdShNaXi4xrpqjVXCo9VM7spAJlSxj6sWnl8kFwV2rCuxMnlhLYly24JF1OV7lZFvWE91-QdouUsLKPbn2A'}]}
+  ]},
+ {name:'Charli XCX', q:'Voglio vestirmi come Charli XCX, era brat', style:'Brat Lime Rave', palette:['#8ACE00','#000000','#FFFFFF','#111111','#333333'],
+  pieces:[
+   {name:'Crop top bianco', items:[{s:'ASOS',p:'8,49 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQsep5RXEzyWF-LHpHFpXIeZ7BpxziuQAMoXR1jrE2JwQNruxKJWVWgkQgeq9kkS3hutQF4GjQFc5A'},{s:'GRS Boutique',p:'170,00 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRLl3_H2KQ1zWIGnBDIcdzIXd2LKjc-QXlgr7huDuqrh8exY0Yv0ZLR-gznVN-jHw8L7t9AR8p9'}]},
+   {name:'Anfibi platform', items:[{s:'Zalando',p:'249,99 €',img:'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTeVIoKiZy-eAcOqAs-CUuu_0LcNEt7UKfYaitSyFm9tJC_AgLhOefLdkrTvbWRexbBqTUJVOTnEQ'},{s:'Zalando',p:'54,99 €',img:'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSbfGrrTLbwEJrcE44beDLIRjIM1qSGQGvfujo3_rnWbjnFBcgr_2mQImEcg_Owh5OWpXpmA-yd'}]},
+   {name:'Borsa verde lime', items:[{s:'Zalando',p:'29,90 €',img:'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQyIEcp3zx7PrTPRIfaJ3mV7lUsEuavbcDdth9-krGBvYnFpIOv_t0WAzLYgsI_jzthfqw4t9gltdIXneuiJyzmEsNuMfr_i8TCQ8Sy_YYr5XsKLX5KsjPouRA'},{s:'Zalando',p:'59,00 €',img:'https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQWjZRWc1ibIm7aWQfYbSIMI7WMpYFibdf0rsnv2np8Cc1PhdU3tWlC7bn6WCmOkRbcIDQJurbysJoJNhNr6MPdFOD6iGK4WubCcQ6bceE0W8wocGBU2L8ZTQ'}]}
+  ]},
+ {name:'Bb Trickz', q:'Mi piace lo stile di Bb Trickz, la rapper di Barcellona', style:'Barcelona Trap Star', palette:['#FF1493','#000000','#FFFFFF','#FFD700','#FF4500'],
+  pieces:[
+   {name:'Felpa rosa oversize', items:[{s:'Zalando',p:'16,59 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQQLe79Gtqe6nnSyYpc7qR8EqlTsJII-ZOeBOnwxBx4J4vhcF9IRFjDT43uSnaLJ2klHdapv0xe6fLeqbtegJZKqdH92Gxp_nwcyvR4kifWb2p70AbZLYnm'},{s:'Zalando',p:'20,90 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcReXc84vab_-eBsb0jdzb4j4V1SNF4DacqvNLKKeg5AD19YMFnN4E5KhPbvcJZJQ4-FXP5nwyt-DtoztrDvagULW70orCqOMEA_OyyO9bv3MXTwrMzMz4an'}]},
+   {name:'Cargo parachute', items:[{s:'ASOS',p:'24,99 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQR0HCH07Jgex3_9Udn5V80kBj5btQvJqeBAPnsGOQMDTr12TmE4-QFYXUQW97bKlxbLZalIuo7X2XQ5tFN9PnJtayVGqqjkjEz5wjNB4xQNrqGPL16zN4u'},{s:'ASOS',p:'56,99 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTYcv6p8m9AsAQPqy-AqDxZLREoPCQLFkLubq3YsOjFv8qNxZCjj7FSvAdBub2xOCqWjKh9TpPA2jBo-qsda1fBJO3ARnf6ZzO-ren9QTXcth79szInpqlPiQ'}]},
+   {name:'Sneakers platform', items:[{s:'Lacoste',p:'100,00 €',img:'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRNyPARs84PuszPDCmUaH1xCBHX8UzgsoMa2l-sRiTdc4WpCYTo0veMcLbZ5wUKpQDDG5rplx0ntsV2JnvV8YWQYMZMGLJ4N1x2VDL9VmnbFJag3Dc4GPR26kg'},{s:'Bershka',p:'29,99 €',img:'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTEkMi2uAdu3aQq4cfPGt36vUXlyEWxVf9CaGSl3AMvNVpnujCNamBXUPdKgpvyyjP-eDfwAvaab3ccQXhp-hAR7Y__-RPILPl28hCLUXTwnAUsbb_Ju5836aiA'}]}
+  ]}
+];
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const img = u => '/api/img?u=' + encodeURIComponent(u);
+const wait = ms => new Promise(r => setTimeout(r, ms));
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let run = 0, current = 0;
+
+// Precarica le foto
+DEMOS.forEach(d => d.pieces.forEach(p => p.items.forEach(i => { const im = new Image(); im.src = img(i.img); })));
+
+function dots(){
+  $('#dots').innerHTML = DEMOS.map((d,i) => `<button type="button" aria-pressed="${i===current}" data-i="${i}">${esc(d.name)}</button>`).join('');
+  $('#dots').querySelectorAll('button').forEach(b => b.onclick = () => { current = +b.dataset.i; play(); });
+}
+
+async function play(){
+  const my = ++run; const d = DEMOS[current]; dots();
+  const S = $('#screen');
+  S.innerHTML = `<div class="top"><span class="logo"><span>T</span><span>ipo</span></span><span class="tag">BETA</span></div>
+    <div class="field" id="field"><span id="typed"></span><span class="caret"></span></div>
+    <div class="cta" id="cta">Trova il mio tipo →</div>
+    <div class="status" id="status"></div>
+    <div class="vibe" id="vibe"><small>IL TUO TIPO È</small><b>${esc(d.style)}</b><div class="pal">${d.palette.map(c=>`<i style="background:${c}"></i>`).join('')}</div></div>
+    <div id="list" style="display:flex;flex-direction:column;gap:10px"></div>`;
+  const typed = $('#typed');
+  for (let i = 1; i <= d.q.length; i++){ if (my !== run) return; typed.textContent = d.q.slice(0, i); await wait(reduced ? 0 : 38); }
+  await wait(400); if (my !== run) return;
+  $('#cta').classList.add('press'); await wait(160); $('#cta').classList.remove('press');
+  $('#status').textContent = 'Sto studiando il tuo tipo…';
+  await wait(1100); if (my !== run) return;
+  $('#status').textContent = '';
+  $('#field').style.minHeight = '0';
+  $('#vibe').classList.add('show');
+  await wait(700);
+  const list = $('#list');
+  const all = d.pieces.flatMap(p => p.items.map(i => ({...i, piece:p.name})));
+  list.innerHTML = `<div class="piece show">I capi · ${all.length} trovati</div><div class="grid">${all.map(i=>`<div class="prod"><div class="img"><img src="${img(i.img)}" alt="${esc(i.piece)}"></div><div class="s">${esc(i.piece)}</div><div class="s">${esc(i.s)}</div><div class="p">${esc(i.p)}</div></div>`).join('')}</div>`;
+  for (const el of list.querySelectorAll('.prod')){ if (my !== run) return; el.classList.add('show'); await wait(220); }
+  await wait(4200); if (my !== run) return;
+  current = (current + 1) % DEMOS.length; play();
+}
+play();
+</script>
+</body>
+</html>
