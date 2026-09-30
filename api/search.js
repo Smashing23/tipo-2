@@ -33,13 +33,38 @@ async function searchGoogleShopping(q, condition) {
     ...(data.inline_shopping_results || []),
     ...((data.categorized_shopping_results || []).flatMap(c => c.shopping_results || []))
   ];
-  return list.slice(0, 8).map(it => ({
+  return rankByShop(list).slice(0, 8).map(it => ({
     title: it.title,
     image: it.thumbnail || it.serpapi_thumbnail || (Array.isArray(it.thumbnails) ? it.thumbnails[0] : null) || null,
     price: it.price || (it.extracted_price ? `${it.extracted_price} €` : null),
     url: it.product_link || it.link || (it.product_id ? `https://www.google.it/shopping/product/${it.product_id}` : null),
     source: it.source || 'Negozio'
   }));
+}
+
+// Negozi preferiti (prima in lista = più in alto) e negozi da evitare.
+const PREFERRED = [
+  'asos', 'zalando', 'vinted', 'depop', 'vestiaire', 'grailed',
+  'ssense', 'end.', 'end clothing', 'farfetch', 'mytheresa', 'yoox', 'luisaviaroma', 'slam jam', 'antonioli', 'ln-cc',
+  'cos', 'arket', 'weekday', '& other stories', 'other stories', 'zara', 'massimo dutti', 'mango', 'uniqlo',
+  'urban outfitters', 'pull&bear', 'pull & bear', 'bershka', 'h&m', 'carhartt', 'allsaints', 'acne', 'nudie',
+  'levi', 'diesel', 'dr. martens', 'dr martens', 'converse', 'vans', 'nike', 'adidas', 'new balance'
+];
+const BLOCKED = ['amazon', 'ebay', 'aliexpress', 'temu', 'shein', 'wish', 'alibaba', 'dhgate', 'banggood', 'cdiscount', 'kaufland', 'manomano', 'idealo', 'trovaprezzi'];
+
+function shopScore(source) {
+  const s = String(source || '').toLowerCase();
+  if (BLOCKED.some(b => s.includes(b))) return -1;
+  const i = PREFERRED.findIndex(p => s.includes(p));
+  return i === -1 ? 0 : PREFERRED.length - i;
+}
+
+function rankByShop(list) {
+  const scored = list.map((it, idx) => ({ it, idx, score: shopScore(it.source) }));
+  const good = scored.filter(x => x.score >= 0);
+  // Se dopo aver tolto i negozi da evitare restano troppo pochi risultati, li teniamo in fondo.
+  const pool = good.length >= 2 ? good : scored;
+  return pool.sort((a, b) => (b.score - a.score) || (a.idx - b.idx)).map(x => x.it);
 }
 
 async function searchEbay(q, condition) {
