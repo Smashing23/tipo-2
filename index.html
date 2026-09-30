@@ -149,9 +149,13 @@ textarea{border:2px solid var(--ink);background:#fff}
 .card .ph .credit{border-radius:0;background:#0A0A0A;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
 .info h3{font-size:22px;font-weight:800}
 .cat{font-size:10px}
-.prods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px;overflow:visible}
+.prods{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 8px;overflow:visible}
 .prod{flex:none;position:relative}
-.prod .img{width:100%;height:auto;aspect-ratio:3/4;background:var(--sand)}
+.prod .img{width:100%;height:auto;aspect-ratio:1/1;background:#fff;border:1px solid var(--line)}
+.prod .img img{object-fit:contain;padding:6px;box-sizing:border-box}
+.prod .t{font-size:12px!important}
+.prod .p{font-size:14px!important}
+.heart{width:30px!important;height:30px!important;top:4px!important;right:4px!important}
 .prod .t{font-size:13px}
 .prod .p{font-size:15px;font-weight:800}
 .prod .c{font-size:10px;color:var(--muted)}
@@ -333,7 +337,7 @@ async function loadProducts(pieces){
       }
       if (!d.items.length){ box.innerHTML = '<div class="none">Nessun prodotto trovato. Prova i negozi qui sotto.</div>'; return; }
       const hero = $('ph'+i), first = d.items[0];
-      if (hero && !hero.dataset.set){
+      if (false && hero && !hero.dataset.set){
         hero.innerHTML = `<img src="${esc(first.image)}" alt="${esc(first.title)}" loading="lazy"><a class="credit" href="${esc(first.url)}" target="_blank" rel="noopener">${esc(first.source||'Negozio')}</a>`;
         hero.dataset.set = 'shop';
         hero.hidden = false;
