@@ -1,23 +1,24 @@
-// Tipo — analisi dello stile con Gemini (Google AI Studio, piano gratuito)
-// Variabili d'ambiente: GEMINI_API_KEY (obbligatoria), GEMINI_MODEL (facoltativa)
+// Tipo — style analysis with Gemini (Google AI Studio, free tier)
+// Environment variables: GEMINI_API_KEY (required), GEMINI_MODEL (optional)
 
 const MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 
 function buildPrompt({ desc, budget, size, condition, hasImages }) {
-  return `Sei lo stylist dell'app "Tipo". L'utente descrive uno stile che vuole ottenere${hasImages ? ' e allega foto di riferimento' : ''}.
-Descrizione: """${String(desc || '').slice(0, 1500)}"""
-Budget totale indicativo: ${budget || 'non indicato'} euro. Taglie: ${size || 'non indicate'}. Preferenza: ${condition || 'entrambi'} (nuovo/usato).
+  const cond = { nuovo: 'new only', usato: 'second-hand only' }[condition] || 'new and second-hand';
+  return `You are the stylist of the app "Tipo". The user describes a style they want to achieve${hasImages ? ' and attaches reference photos' : ''}.
+Description: """${String(desc || '').slice(0, 1500)}"""
+Indicative total budget: ${budget || 'not given'} euros. Sizes: ${size || 'not given'}. Preference: ${cond}.
 
-Rispondi SOLO con un oggetto JSON, in italiano, con questa forma:
-{"styleName": "nome evocativo dello stile, 2-4 parole", "description": "due frasi su cosa lo caratterizza", "palette": ["#hex", 5 colori], "pieces": [{"name": "nome del capo", "category": "giacca|pantaloni|scarpe|maglia|accessorio", "why": "una frase sul perché funziona", "query": "parole chiave di ricerca per negozi online italiani (taglio, materiale, colore, uomo/donna)", "ebay": "parole chiave brevi per eBay, 3-5 parole, anche brand adatti al budget", "vinted": "parole chiave per Vinted", "photo": "3-5 parole IN INGLESE per trovare una foto stock del solo capo, molto descrittive (es. black leather biker jacket)"}], "tip": "un consiglio di stile breve e concreto"}
-Da 4 a 6 capi, i più importanti per ottenere il look. Niente prezzi inventati.
-Regola per le parole chiave: sono capi di MODA, non abbigliamento tecnico o sportivo. Non usare mai parole come "biker", "moto", "motociclista", "rider" (portano a giacche da moto con protezioni): per una giacca in pelle stile rock scrivi per esempio "giubbotto pelle nera uomo chiodo slim". Aggiungi sempre "uomo" o "donna" se si capisce dal contesto.`;
+Reply ONLY with a JSON object in this shape. Write styleName, description, name, why and tip in ENGLISH. Write query, ebay and vinted in ITALIAN, because they are used to search Italian online stores:
+{"styleName": "evocative style name, 2-4 words", "description": "two sentences on what defines it", "palette": ["#hex", 5 colours], "pieces": [{"name": "name of the piece", "category": "giacca|pantaloni|scarpe|maglia|accessorio", "why": "one sentence on why it works", "query": "Italian search keywords for Italian online stores (cut, material, colour, uomo/donna)", "ebay": "short Italian keywords for eBay, 3-5 words, brands that fit the budget are fine", "vinted": "Italian keywords for Vinted", "photo": "3-5 English words to find a stock photo of the piece alone, very descriptive (e.g. black leather biker jacket)"}], "tip": "a short, concrete styling tip"}
+Keep category exactly one of the Italian values listed. 4 to 6 pieces, the most important ones to get the look. No invented prices.
+Keyword rule: these are FASHION pieces, not technical or sports gear. Never use words like "biker", "moto", "motociclista", "rider" in the Italian keywords (they bring up motorcycle jackets with armour): for a rock-style leather jacket write for example "giubbotto pelle nera uomo chiodo slim". Always add "uomo" or "donna" when the context makes it clear.`;
 }
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'method_not_allowed' });
   const key = process.env.GEMINI_API_KEY;
-  if (!key) return res.status(503).json({ error: 'missing_key', message: 'Manca GEMINI_API_KEY nelle impostazioni di Vercel.' });
+  if (!key) return res.status(503).json({ error: 'missing_key', message: 'GEMINI_API_KEY is missing in the Vercel settings.' });
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
   const images = Array.isArray(body.images) ? body.images.slice(0, 3) : [];
@@ -40,7 +41,7 @@ export default async function handler(req, res) {
     const data = await r.json();
     if (!r.ok) {
       const status = r.status === 429 ? 429 : 502;
-      return res.status(status).json({ error: status === 429 ? 'rate_limited' : 'ai_error', message: data?.error?.message || 'Errore del modello' });
+      return res.status(status).json({ error: status === 429 ? 'rate_limited' : 'ai_error', message: data?.error?.message || 'Model error' });
     }
     const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text || '').join('') || '';
     let out;

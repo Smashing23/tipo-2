@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -185,37 +185,37 @@ textarea{border:2px solid var(--ink);background:#fff}
 <div class="app">
   <div class="top">
     <div class="word"><a class="logo" href="/" aria-label="Tipo, home"><span class="logo-d"><span>T</span><span>ipo</span></span></a></div>
-    <span class="badge">prototipo</span>
+    <span class="badge">prototype</span>
   </div>
 
   <section class="hero" aria-labelledby="h">
-    <div class="eyebrow">Nuova ricerca</div>
-    <h1 id="h">Mostrami chi vuoi <em>sembrare.</em></h1>
-    <p>Descrivi lo stile o carica le foto di riferimento. Ti restituisco il tuo tipo e i capi da cercare, nuovi e usati.</p>
+    <div class="eyebrow">New search</div>
+    <h1 id="h">Show me who you want to <em>look like.</em></h1>
+    <p>Describe the style or upload reference photos. I'll give you your type and the pieces to look for, new and second-hand.</p>
   </section>
 
   <form id="form" class="hero" novalidate>
     <div class="refs" id="refs">
       <label class="add" id="addRef" for="refInput">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-        Foto reference
+        Reference photo
         <input id="refInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
       </label>
     </div>
     <div class="field">
-      <label for="desc">Descrivi lo stile</label>
-      <textarea id="desc" rows="3" placeholder="Es. mi piace come si vestono i The Hellp, il duo elettronico americano"></textarea>
+      <label for="desc">Describe the style</label>
+      <textarea id="desc" rows="3" placeholder="E.g. I love how The Hellp dress, the American electronic duo"></textarea>
     </div>
     <div class="chips">
-      <label class="chip" for="budget">Budget € <input id="budget" inputmode="numeric" value="300" aria-label="Budget in euro"></label>
-      <label class="chip" for="size">Taglia <input id="size" value="M · 32" aria-label="Taglia"></label>
-      <div class="seg" role="group" aria-label="Nuovo o usato">
-        <button type="button" data-cond="entrambi" aria-pressed="true">Entrambi</button>
-        <button type="button" data-cond="nuovo" aria-pressed="false">Nuovo</button>
-        <button type="button" data-cond="usato" aria-pressed="false">Usato</button>
+      <label class="chip" for="budget">Budget € <input id="budget" inputmode="numeric" value="300" aria-label="Budget in euros"></label>
+      <label class="chip" for="size">Size <input id="size" value="M · 32" aria-label="Size"></label>
+      <div class="seg" role="group" aria-label="New or second-hand">
+        <button type="button" data-cond="entrambi" aria-pressed="true">Both</button>
+        <button type="button" data-cond="nuovo" aria-pressed="false">New</button>
+        <button type="button" data-cond="usato" aria-pressed="false">Used</button>
       </div>
     </div>
-    <button class="cta" id="go" type="submit">Trova il mio tipo
+    <button class="cta" id="go" type="submit">Find my type
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
     </button>
     <div class="status" id="status" role="status" aria-live="polite"></div>
@@ -224,14 +224,14 @@ textarea{border:2px solid var(--ink);background:#fff}
   <section class="vibe fade" id="vibe" aria-labelledby="vn" hidden></section>
 
   <section class="sec" id="secCapi" aria-labelledby="ch" hidden>
-    <div class="eyebrow" id="chEyebrow">I capi</div>
-    <h2 id="ch">I pezzi da cercare</h2>
-    <p class="q">Per ogni capo: foto e prezzi reali dai negozi, più ricerche pronte.</p>
+    <div class="eyebrow" id="chEyebrow">The pieces</div>
+    <h2 id="ch">Pieces to look for</h2>
+    <p class="q">For each piece: real photos and prices from stores, plus ready-made searches.</p>
   </section>
   <div class="list" id="list" hidden></div>
 
   <div class="tip" id="tip" hidden></div>
-  <p class="foot" id="foot" hidden>Prototipo. Foto e prezzi dei prodotti forniti dai negozi tramite Google Shopping; verifica disponibilità e taglie sul sito del venditore.</p>
+  <p class="foot" id="foot" hidden>Prototype. Product photos and prices come from stores via Google Shopping; check availability and sizes on the seller's site.</p>
 </div>
 
 <script>
@@ -245,6 +245,7 @@ const ICONS = {
 };
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const enc = encodeURIComponent;
+const CAT = {giacca:'jacket', pantaloni:'trousers', scarpe:'shoes', maglia:'top', accessorio:'accessory'};
 const $ = id => document.getElementById(id);
 
 const DEMO = {
@@ -253,11 +254,11 @@ const DEMO = {
   description:"Indie sleaze rivisto: tagli sartoriali stretti alla Hedi Slimane, pelle vissuta, nero su nero. Elegante ma con un'aria da backstage.",
   palette:['#0A0A0A','#3B3A38','#8C8A85','#F2F0EB','#B5B8BC'],
   pieces:[
-    {name:'Biker in pelle slim',photo:'black leather biker jacket',category:'giacca',why:'Pelle vissuta e zip asimmetrica: il capo che fa l’ottanta per cento del look.',query:'giubbotto pelle nera uomo chiodo slim',ebay:'giubbotto pelle nera uomo chiodo',vinted:'allsaints cargo giacca pelle'},
-    {name:'Skinny jeans neri',photo:'black skinny jeans men',category:'pantaloni',why:'Vita bassa e gamba stretta, nero pieno o appena slavato.',query:'skinny jeans nero vita bassa uomo',ebay:'nudie tight terry',vinted:'nudie tight terry'},
-    {name:'Chelsea con tacco cubano',photo:'black chelsea boots heel',category:'scarpe',why:'Il dettaglio più Slimane: punta affusolata e tacco alto.',query:'chelsea boots tacco cubano nero uomo',ebay:'chelsea boots tacco cubano nero',vinted:'saint laurent wyatt'},
-    {name:'T-shirt bianca aderente',photo:'white t-shirt men',category:'maglia',why:'Semplice e un po’ vissuta, sotto la giacca.',query:'t-shirt bianca slim cotone uomo',ebay:'t-shirt bianca slim uomo',vinted:'t-shirt bianca slim'},
-    {name:'Anelli in argento',photo:'silver rings men hand',category:'accessorio',why:'Due o tre, spessi, per chiudere il look.',query:'anello argento uomo',ebay:'anello argento 925 uomo',vinted:'anello argento uomo'}
+    {name:'Slim leather biker jacket',photo:'black leather biker jacket',category:'giacca',why:'Worn-in leather and an asymmetric zip: the piece that makes 80% of the look.',query:'giubbotto pelle nera uomo chiodo slim',ebay:'giubbotto pelle nera uomo chiodo',vinted:'allsaints cargo giacca pelle'},
+    {name:'Black skinny jeans',photo:'black skinny jeans men',category:'pantaloni',why:'Low rise and narrow leg, solid black or slightly washed.',query:'skinny jeans nero vita bassa uomo',ebay:'nudie tight terry',vinted:'nudie tight terry'},
+    {name:'Cuban-heel Chelsea boots',photo:'black chelsea boots heel',category:'scarpe',why:'The most Slimane detail: pointed toe and a raised heel.',query:'chelsea boots tacco cubano nero uomo',ebay:'chelsea boots tacco cubano nero',vinted:'saint laurent wyatt'},
+    {name:'Fitted white t-shirt',photo:'white t-shirt men',category:'maglia',why:'Simple and a little worn, under the jacket.',query:'t-shirt bianca slim cotone uomo',ebay:'t-shirt bianca slim uomo',vinted:'t-shirt bianca slim'},
+    {name:'Silver rings',photo:'silver rings men hand',category:'accessorio',why:'Two or three chunky ones to finish the look.',query:'anello argento uomo',ebay:'anello argento 925 uomo',vinted:'anello argento uomo'}
   ],
   tip:"Spendi sulla giacca e risparmia su tutto il resto. Tieni tutto nero o grigio, niente loghi."
 };
@@ -281,28 +282,28 @@ function render(r){
   const words = String(r.styleName||'').trim().split(' ');
   const last = words.pop();
   $('vibe').innerHTML = `
-    ${r.demo ? '<span class="demo">Esempio</span>' : ''}
-    <div class="eyebrow">Il tuo tipo è</div>
+    ${r.demo ? '<span class="demo">Example</span>' : ''}
+    <div class="eyebrow">Your type is</div>
     <h2 id="vn">${esc(words.join(' '))} <em>${esc(last)}</em></h2>
     <p>${esc(r.description)}</p>
     <div class="pal" aria-label="Palette">${(r.palette||[]).slice(0,5).map(c=>`<div style="background:${/^#[0-9a-f]{3,8}$/i.test(c)?c:'#888'}" title="${esc(c)}"></div>`).join('')}</div>
-    <div class="keys">${(r.pieces||[]).map(p=>`<div><span>${esc(p.name)}</span><span>${esc(p.category||'')}</span></div>`).join('')}</div>`;
-  $('chEyebrow').textContent = r.demo ? 'I capi · esempio' : 'I capi';
-  $('ch').textContent = `${(r.pieces||[]).length} pezzi da cercare`;
+    <div class="keys">${(r.pieces||[]).map(p=>`<div><span>${esc(p.name)}</span><span>${esc(CAT[p.category]||p.category||'')}</span></div>`).join('')}</div>`;
+  $('chEyebrow').textContent = r.demo ? 'The pieces · example' : 'The pieces';
+  $('ch').textContent = `${(r.pieces||[]).length} pieces to look for`;
   $('list').innerHTML = (r.pieces||[]).map((p,i)=>`
     <article class="card">
       <div class="card-top">
         <div class="ph" id="ph${i}" hidden></div>
         <div class="info">
-          <div class="cat">${esc(p.category||'capo')}</div>
+          <div class="cat">${esc(CAT[p.category]||p.category||'piece')}</div>
           <h3>${esc(p.name)}</h3>
           <p>${esc(p.why)}</p>
         </div>
       </div>
-      <div class="prods" id="prods${i}" aria-label="Prodotti per ${esc(p.name)}"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
+      <div class="prods" id="prods${i}" aria-label="Products for ${esc(p.name)}"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
       <div class="shops">${shopLinks(p)}</div>
     </article>`).join('');
-  $('tip').innerHTML = `<div class="eyebrow">Consiglio dello stylist</div><p>${esc(r.tip)}</p>`;
+  $('tip').innerHTML = `<div class="eyebrow">Stylist tip</div><p>${esc(r.tip)}</p>`;
   loadProducts(r.pieces||[]);
   loadPhotos(r.pieces||[]);
 }
@@ -316,7 +317,7 @@ async function loadPhotos(pieces){
       const d = await r.json();
       const box = $('ph'+i);
       if (!box || !d.image) return;
-      box.innerHTML = `<img src="${esc(d.image)}" alt="Esempio: ${esc(p.name)}" loading="lazy"><a class="credit" href="${esc(d.pageUrl)}" target="_blank" rel="noopener">Foto: ${esc(d.photographer)} · Pexels</a>`;
+      box.innerHTML = `<img src="${esc(d.image)}" alt="Example: ${esc(p.name)}" loading="lazy"><a class="credit" href="${esc(d.pageUrl)}" target="_blank" rel="noopener">Photo: ${esc(d.photographer)} · Pexels</a>`;
       box.dataset.set = 'pexels';
       box.hidden = false;
     }catch(_){}
@@ -332,13 +333,13 @@ async function loadProducts(pieces){
       const d = await r.json();
       if (my !== runId) return;
       if (!r.ok){
-        box.innerHTML = `<div class="none">${d.error==='missing_key' ? 'Foto prodotti non attive: manca la chiave SERPAPI_API_KEY.' : 'Foto non disponibili ora. Usa i link qui sotto.'}</div>`;
+        box.innerHTML = `<div class="none">${d.error==='missing_key' ? 'Product photos are off: SERPAPI_API_KEY is missing.' : 'Photos unavailable right now. Use the links below.'}</div>`;
         return;
       }
-      if (!d.items.length){ box.innerHTML = '<div class="none">Nessun prodotto trovato. Prova i negozi qui sotto.</div>'; return; }
+      if (!d.items.length){ box.innerHTML = '<div class="none">No products found. Try the stores below.</div>'; return; }
       const hero = $('ph'+i), first = d.items[0];
       if (false && hero && !hero.dataset.set){
-        hero.innerHTML = `<img src="${esc(first.image)}" alt="${esc(first.title)}" loading="lazy"><a class="credit" href="${esc(first.url)}" target="_blank" rel="noopener">${esc(first.source||'Negozio')}</a>`;
+        hero.innerHTML = `<img src="${esc(first.image)}" alt="${esc(first.title)}" loading="lazy"><a class="credit" href="${esc(first.url)}" target="_blank" rel="noopener">${esc(first.source||'Store')}</a>`;
         hero.dataset.set = 'shop';
         hero.hidden = false;
       }
@@ -350,7 +351,7 @@ async function loadProducts(pieces){
           <div class="p">${esc(it.price||'')}</div>
         </a>`).join('');
     }catch(_){
-      if (my === runId) box.innerHTML = '<div class="none">Foto non disponibili ora. Usa i link qui sotto.</div>';
+      if (my === runId) box.innerHTML = '<div class="none">Photos unavailable right now. Use the links below.</div>';
     }
   }));
 }
@@ -378,7 +379,7 @@ function renderRefs(){
   refs.forEach((r,i)=>{
     const d = document.createElement('div');
     d.className = 'ref';
-    d.innerHTML = `<img alt="Reference ${i+1}" src="${r.dataUrl}"><button type="button" aria-label="Rimuovi reference ${i+1}">×</button>`;
+    d.innerHTML = `<img alt="Reference ${i+1}" src="${r.dataUrl}"><button type="button" aria-label="Remove reference ${i+1}">×</button>`;
     d.querySelector('button').onclick = ()=>{ refs.splice(i,1); renderRefs(); };
     box.insertBefore(d, add);
   });
@@ -399,9 +400,9 @@ document.querySelectorAll('.seg button').forEach(b=>{
 });
 
 const ERR = {
-  missing_key:'Analisi AI non attiva: manca la chiave Gemini nelle impostazioni del sito. Sotto vedi l’esempio.',
-  rate_limited:'Troppe richieste ravvicinate. Riprova tra un minuto.',
-  bad_output:'Risposta incompleta. Premi di nuovo "Trova il mio tipo".'
+  missing_key:'AI analysis is off: the Gemini key is missing in the site settings.',
+  rate_limited:'Too many requests. Try again in a minute.',
+  bad_output:'Incomplete answer. Press "Find my type" again.'
 };
 
 $('form').addEventListener('submit', async e=>{
@@ -409,9 +410,9 @@ $('form').addEventListener('submit', async e=>{
   const desc = $('desc').value.trim();
   const st = $('status'), btn = $('go');
   st.classList.remove('err');
-  if (!desc && !refs.length){ st.textContent = 'Scrivi due parole sullo stile o carica almeno una foto.'; st.classList.add('err'); return; }
+  if (!desc && !refs.length){ st.textContent = 'Write a few words about the style or upload at least one photo.'; st.classList.add('err'); return; }
   btn.disabled = true;
-  st.textContent = 'Sto studiando il tuo tipo…';
+  st.textContent = 'Studying your type…';
   try{
     const r = await fetch('/api/analyze', {
       method:'POST', headers:{'Content-Type':'application/json'},
@@ -420,10 +421,10 @@ $('form').addEventListener('submit', async e=>{
     const d = await r.json().catch(()=>({error:'bad_output'}));
     if (!r.ok) throw d;
     render(d);
-    st.textContent = 'Fatto. Scorri per vedere i capi.';
+    st.textContent = 'Done. Scroll down to see the pieces.';
     $('vibe').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
   }catch(err){
-    st.textContent = ERR[err && err.error] || 'Qualcosa è andato storto. Riprova tra poco.';
+    st.textContent = ERR[err && err.error] || 'Something went wrong. Try again shortly.';
     st.classList.add('err');
   }finally{
     btn.disabled = false;

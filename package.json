@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Tipo — descrivi uno stile, trova i capi.",
+  "description": "Tipo — describe a style, find the pieces.",
   "engines": { "node": ">=18" }
 }

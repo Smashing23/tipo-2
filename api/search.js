@@ -13,7 +13,7 @@ async function getEbayToken() {
     body: 'grant_type=client_credentials&scope=' + encodeURIComponent('https://api.ebay.com/oauth/api_scope')
   });
   const data = await r.json();
-  if (!r.ok || !data.access_token) throw new Error(data.error_description || 'Token eBay non ottenuto');
+  if (!r.ok || !data.access_token) throw new Error(data.error_description || 'Could not get eBay token');
   cached = { token: data.access_token, exp: Date.now() + (data.expires_in || 7200) * 1000 };
   return cached.token;
 }
@@ -27,7 +27,7 @@ async function searchGoogleShopping(q, condition) {
   const r = await fetch(`https://serpapi.com/search.json?${params}`);
   const data = await r.json();
   if (data.error && /any results/i.test(data.error)) return [];
-  if (!r.ok || data.error) throw new Error(data.error || 'Errore Google Shopping');
+  if (!r.ok || data.error) throw new Error(data.error || 'Google Shopping error');
   const list = [
     ...(data.shopping_results || []),
     ...(data.inline_shopping_results || []),
@@ -76,7 +76,7 @@ async function searchEbay(q, condition) {
     headers: { Authorization: `Bearer ${token}`, 'X-EBAY-C-MARKETPLACE-ID': 'EBAY_IT', 'Accept-Language': 'it-IT' }
   });
   const data = await r.json();
-  if (!r.ok) throw new Error(data?.errors?.[0]?.message || 'Errore eBay');
+  if (!r.ok) throw new Error(data?.errors?.[0]?.message || 'eBay error');
   return (data.itemSummaries || []).map(it => ({
     title: it.title,
     image: it.image?.imageUrl || it.thumbnailImages?.[0]?.imageUrl || null,
@@ -90,7 +90,7 @@ export default async function handler(req, res) {
   const hasSerp = !!process.env.SERPAPI_API_KEY;
   const hasEbay = !!(process.env.EBAY_CLIENT_ID && process.env.EBAY_CLIENT_SECRET);
   if (!hasSerp && !hasEbay) {
-    return res.status(503).json({ error: 'missing_key', message: 'Manca la chiave per le foto dei prodotti nelle impostazioni di Vercel.' });
+    return res.status(503).json({ error: 'missing_key', message: 'The product photo key is missing in the Vercel settings.' });
   }
   const q = String(req.query.q || '').slice(0, 120).trim();
   const condition = String(req.query.condition || 'entrambi');
