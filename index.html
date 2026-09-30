@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tipo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#FFFFFF">
 <title>Tipo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
@@ -191,7 +199,7 @@ textarea{border:2px solid var(--ink);background:#fff}
     </div>
     <div class="field">
       <label for="desc">Descrivi lo stile</label>
-      <textarea id="desc" rows="3">Mi piace come si vestono i The Hellp, il duo elettronico americano</textarea>
+      <textarea id="desc" rows="3" placeholder="Es. mi piace come si vestono i The Hellp, il duo elettronico americano"></textarea>
     </div>
     <div class="chips">
       <label class="chip" for="budget">Budget € <input id="budget" inputmode="numeric" value="300" aria-label="Budget in euro"></label>
@@ -208,17 +216,17 @@ textarea{border:2px solid var(--ink);background:#fff}
     <div class="status" id="status" role="status" aria-live="polite"></div>
   </form>
 
-  <section class="vibe fade" id="vibe" aria-labelledby="vn"></section>
+  <section class="vibe fade" id="vibe" aria-labelledby="vn" hidden></section>
 
-  <section class="sec" aria-labelledby="ch">
+  <section class="sec" id="secCapi" aria-labelledby="ch" hidden>
     <div class="eyebrow" id="chEyebrow">I capi</div>
     <h2 id="ch">I pezzi da cercare</h2>
     <p class="q">Per ogni capo: foto e prezzi reali dai negozi, più ricerche pronte.</p>
   </section>
-  <div class="list" id="list"></div>
+  <div class="list" id="list" hidden></div>
 
-  <div class="tip" id="tip"></div>
-  <p class="foot">Prototipo. Foto e prezzi dei prodotti forniti dai negozi tramite Google Shopping; verifica disponibilità e taglie sul sito del venditore.</p>
+  <div class="tip" id="tip" hidden></div>
+  <p class="foot" id="foot" hidden>Prototipo. Foto e prezzi dei prodotti forniti dai negozi tramite Google Shopping; verifica disponibilità e taglie sul sito del venditore.</p>
 </div>
 
 <script>
@@ -264,6 +272,7 @@ function shopLinks(p){
 }
 
 function render(r){
+  ['vibe','secCapi','list','tip','foot'].forEach(id=>{ const el=$(id); if (el) el.hidden=false; });
   const words = String(r.styleName||'').trim().split(' ');
   const last = words.pop();
   $('vibe').innerHTML = `
@@ -416,7 +425,6 @@ $('form').addEventListener('submit', async e=>{
   }
 });
 
-render(DEMO);
 renderRefs();
 })();
 </script>
