@@ -1,0 +1,8 @@
+{
+  "name": "tipo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tipo — descrivi uno stile, trova i capi.",
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tipo</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Layout: una colonna da telefono (max 440px), tre blocchi in sequenza: reference → tipo → capi. Look deliberato e unico (brand Tipo), niente tema scuro separato. */
+:root{
+  --ivory:#F4F1EA; --paper:#FBFAF6; --ink:#141413; --muted:#5F5B53; --line:#E2DDD1; --line2:#CFC9BC;
+  --rust:#A33A18; --rust-soft:#E07A52; --sand:#E6E1D6; --moss:#2F5D50; --night-muted:#B9B3A6; --night-text:#D6D0C3; --night-line:#2E2D2A;
+  --display:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --body:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;
+  color-scheme:light;
+}
+html,body{background:var(--ivory);color:var(--ink)}
+body{font-family:var(--body);font-size:15px;line-height:1.45;padding-inline:16px;padding-block:0 48px}
+.app{max-width:440px;margin:0 auto;display:flex;flex-direction:column;gap:28px;padding-top:28px}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
+p{margin:0}
+button,input,textarea{font-family:var(--body)}
+:focus-visible{outline:2px solid var(--rust);outline-offset:2px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.top{display:flex;justify-content:space-between;align-items:center}
+.word{font-family:var(--display);font-size:32px;letter-spacing:-.5px}
+.word span{color:var(--rust)}
+.badge{font-size:12px;padding:4px 10px;border-radius:12px;border:1px solid var(--line2);color:var(--muted)}
+.hero{display:flex;flex-direction:column;gap:10px}
+.hero h1{font-size:44px;line-height:1.02;letter-spacing:-1px}
+.hero p{color:var(--muted)}
+.refs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ref{aspect-ratio:3/4;max-width:100%;border-radius:10px;overflow:hidden;background:var(--sand);position:relative}
+.ref img{width:100%;height:100%;object-fit:cover;display:block}
+.ref button{position:absolute;top:6px;right:6px;width:28px;height:28px;border-radius:14px;border:0;background:var(--ink);color:var(--ivory);cursor:pointer;font-size:14px;line-height:1}
+.add{aspect-ratio:3/4;max-width:100%;border:1.5px dashed var(--ink);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;cursor:pointer;background:transparent;color:var(--ink)}
+.add input{position:absolute;width:1px;height:1px;opacity:0}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-size:13px;font-weight:500}
+textarea{border:1px solid var(--ink);border-radius:12px;background:var(--paper);padding:14px;font-size:15px;resize:vertical;color:var(--ink);min-height:84px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border-radius:20px;border:1px solid var(--line2);font-size:13px}
+.chip input{border:0;background:transparent;width:74px;font-size:13px;color:var(--ink);padding:0}
+.seg{display:flex;border:1px solid var(--line2);border-radius:20px;overflow:hidden}
+.seg button{min-height:40px;padding:0 12px;border:0;background:transparent;font-size:13px;color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--ivory)}
+.cta{min-height:56px;border-radius:28px;background:var(--ink);color:var(--ivory);border:0;font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;width:100%}
+.cta:disabled{opacity:.55;cursor:default}
+.status{font-size:13px;color:var(--muted);min-height:20px}
+.status.err{color:var(--rust)}
+.vibe{background:var(--ink);color:var(--ivory);border-radius:24px;padding:28px 22px;display:flex;flex-direction:column;gap:22px}
+.vibe .eyebrow{color:var(--night-muted)}
+.vibe h2{font-size:46px;line-height:.98;letter-spacing:-1px}
+.vibe h2 em{color:var(--rust-soft)}
+.vibe p{color:var(--night-text)}
+.demo{align-self:flex-start;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px;border:1px solid var(--night-muted);color:var(--night-muted)}
+.pal{display:flex;gap:8px}
+.pal div{flex-grow:1;height:40px;border-radius:8px;border:1px solid var(--night-line)}
+.keys{display:flex;flex-direction:column}
+.keys div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid var(--night-line)}
+.keys div:last-child{border-bottom:0}
+.keys span:first-child{font-family:var(--display);font-size:21px}
+.keys span:last-child{font-size:12px;color:var(--night-muted);white-space:nowrap}
+.sec{display:flex;flex-direction:column;gap:6px}
+.sec h2{font-size:34px;letter-spacing:-.6px;line-height:1.05}
+.list{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:12px}
+.card-top{display:flex;gap:14px}
+.ph{width:108px;height:136px;flex-shrink:0;border-radius:10px;background:var(--sand);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph input{position:absolute;width:1px;height:1px;opacity:0}
+.ph .hint{position:absolute;left:0;right:0;bottom:0;padding:5px 6px;font-size:10px;line-height:1.2;background:rgba(20,20,19,.78);color:var(--ivory);text-align:center}
+.ph.drag{outline:2px dashed var(--rust);outline-offset:-4px}
+.info{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cat{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.info h3{font-size:21px;line-height:1.1}
+.info p{font-size:13px;color:var(--muted)}
+.q{font-size:12px;color:var(--muted)}
+.q b{font-weight:500;color:var(--ink)}
+.shops{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.shops a{min-height:38px;border-radius:19px;border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--ink);text-decoration:none}
+.shops a:hover{background:var(--ink);color:var(--ivory)}
+.shops a.used{border-color:var(--moss);color:var(--moss)}
+.shops a.used:hover{background:var(--moss);color:var(--ivory)}
+.tip{background:var(--ink);color:var(--ivory);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:8px}
+.tip .eyebrow{color:var(--rust-soft)}
+.tip p{font-family:var(--display);font-size:21px;line-height:1.25}
+.foot{font-size:11px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.fade{animation:f .5s ease both}@keyframes f{from{opacity:.001;transform:translateY(6px)}to{opacity:1;transform:none}}}
+</style>
+<style>
+.prods{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x mandatory}
+.prod{flex:0 0 132px;scroll-snap-align:start;display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink)}
+.prod .img{width:132px;height:150px;border-radius:10px;background:var(--sand);overflow:hidden}
+.prod img{width:100%;height:100%;object-fit:cover;display:block}
+.prod .t{font-size:12px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prod .p{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+.prod .c{font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+.prods .sk{flex:0 0 132px;height:200px;border-radius:10px;background:var(--sand);opacity:.7}
+.prods .none{font-size:12px;color:var(--muted);padding:8px 0}
+.src{font-size:11px;color:var(--muted)}
+</style>
+
+</head>
+<body>
+
+<div class="app">
+  <div class="top">
+    <div class="word">tipo<span>.</span></div>
+    <span class="badge">prototipo</span>
+  </div>
+
+  <section class="hero" aria-labelledby="h">
+    <div class="eyebrow">Nuova ricerca</div>
+    <h1 id="h">Mostrami chi vuoi <em>sembrare.</em></h1>
+    <p>Descrivi lo stile o carica le foto di riferimento. Ti restituisco il tuo tipo e i capi da cercare, nuovi e usati.</p>
+  </section>
+
+  <form id="form" class="hero" novalidate>
+    <div class="refs" id="refs">
+      <label class="add" id="addRef" for="refInput">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Foto reference
+        <input id="refInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+      </label>
+    </div>
+    <div class="field">
+      <label for="desc">Descrivi lo stile</label>
+      <textarea id="desc" rows="3">Mi piace come si vestono i The Hellp, il duo elettronico americano</textarea>
+    </div>
+    <div class="chips">
+      <label class="chip" for="budget">Budget € <input id="budget" inputmode="numeric" value="300" aria-label="Budget in euro"></label>
+      <label class="chip" for="size">Taglia <input id="size" value="M · 32" aria-label="Taglia"></label>
+      <div class="seg" role="group" aria-label="Nuovo o usato">
+        <button type="button" data-cond="entrambi" aria-pressed="true">Entrambi</button>
+        <button type="button" data-cond="nuovo" aria-pressed="false">Nuovo</button>
+        <button type="button" data-cond="usato" aria-pressed="false">Usato</button>
+      </div>
+    </div>
+    <button class="cta" id="go" type="submit">Trova il mio tipo
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </form>
+
+  <section class="vibe fade" id="vibe" aria-labelledby="vn"></section>
+
+  <section class="sec" aria-labelledby="ch">
+    <div class="eyebrow" id="chEyebrow">I capi</div>
+    <h2 id="ch">I pezzi da cercare</h2>
+    <p class="q">Per ogni capo: foto reali da eBay (nuovo e usato) e ricerche pronte sui negozi.</p>
+  </section>
+  <div class="list" id="list"></div>
+
+  <div class="tip" id="tip"></div>
+  <p class="foot">Prototipo. Foto e prezzi dei prodotti forniti da eBay; verifica disponibilità e taglie sul sito del venditore.</p>
+</div>
+
+<script>
+(function(){
+const ICONS = {
+  giacca:'<svg width="80" height="96" viewBox="0 0 100 120" aria-hidden="true"><path d="M30 18 L50 25 L70 18 L88 30 L96 100 L84 102 L80 58 L79 110 L21 110 L20 58 L16 102 L4 100 L12 30 Z" fill="#1A1918"/><path d="M30 18 L40 46 L50 29 M70 18 L61 44 L50 29" fill="none" stroke="#6B6862" stroke-width="1.5"/><path d="M45 30 L57 110" stroke="#B5B8BC" stroke-width="1.5"/><path d="M21 100 L79 100" stroke="#3B3A38" stroke-width="3"/></svg>',
+  pantaloni:'<svg width="66" height="100" viewBox="0 0 100 120" aria-hidden="true"><path d="M28 8 L72 8 L74 22 L66 116 L54 116 L50 42 L46 116 L34 116 L26 22 Z" fill="#1A1918"/><path d="M27 18 L73 18" stroke="#3B3A38" stroke-width="2"/></svg>',
+  scarpe:'<svg width="88" height="88" viewBox="0 0 100 110" aria-hidden="true"><path d="M30 10 L56 10 L58 66 Q62 76 82 80 Q96 84 96 94 L96 98 L42 98 L40 106 L28 106 L25 66 Z" fill="#1A1918"/><path d="M38 24 L49 24 L51 60 L41 60 Z" fill="#3B3A38"/></svg>',
+  maglia:'<svg width="84" height="84" viewBox="0 0 100 100" aria-hidden="true"><path d="M34 12 Q50 22 66 12 L90 26 L82 42 L72 38 L72 92 L28 92 L28 38 L18 42 L10 26 Z" fill="#1A1918"/></svg>',
+  accessorio:'<svg width="84" height="84" viewBox="0 0 100 100" aria-hidden="true"><circle cx="34" cy="52" r="16" fill="none" stroke="#1A1918" stroke-width="6"/><circle cx="66" cy="52" r="16" fill="#1A1918"/></svg>'
+};
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const enc = encodeURIComponent;
+const $ = id => document.getElementById(id);
+
+const DEMO = {
+  demo:true,
+  styleName:'West Coast rockstar',
+  description:"Indie sleaze rivisto: tagli sartoriali stretti alla Hedi Slimane, pelle vissuta, nero su nero. Elegante ma con un'aria da backstage.",
+  palette:['#0A0A0A','#3B3A38','#8C8A85','#F2F0EB','#B5B8BC'],
+  pieces:[
+    {name:'Biker in pelle slim',category:'giacca',why:'Pelle vissuta e zip asimmetrica: il capo che fa l’ottanta per cento del look.',query:'giacca biker pelle nera slim uomo',ebay:'giacca biker pelle nera uomo',vinted:'allsaints cargo giacca pelle'},
+    {name:'Skinny jeans neri',category:'pantaloni',why:'Vita bassa e gamba stretta, nero pieno o appena slavato.',query:'skinny jeans nero vita bassa uomo',ebay:'nudie tight terry',vinted:'nudie tight terry'},
+    {name:'Chelsea con tacco cubano',category:'scarpe',why:'Il dettaglio più Slimane: punta affusolata e tacco alto.',query:'chelsea boots tacco cubano nero uomo',ebay:'chelsea boots tacco cubano nero',vinted:'saint laurent wyatt'},
+    {name:'T-shirt bianca aderente',category:'maglia',why:'Semplice e un po’ vissuta, sotto la giacca.',query:'t-shirt bianca slim cotone uomo',ebay:'t-shirt bianca slim uomo',vinted:'t-shirt bianca slim'},
+    {name:'Anelli in argento',category:'accessorio',why:'Due o tre, spessi, per chiudere il look.',query:'anello argento uomo',ebay:'anello argento 925 uomo',vinted:'anello argento uomo'}
+  ],
+  tip:"Spendi sulla giacca e risparmia su tutto il resto. Tieni tutto nero o grigio, niente loghi."
+};
+
+let condition = 'entrambi';
+let refs = []; // {dataUrl}
+let runId = 0;
+
+function shopLinks(p){
+  const q = enc(p.query || p.name), v = enc(p.vinted || p.query || p.name);
+  return [
+    ['Zalando','https://www.zalando.it/catalogo/?q='+q,false],
+    ['ASOS','https://www.asos.com/it/search/?q='+q,false],
+    ['Google','https://www.google.com/search?tbm=shop&q='+q,false],
+    ['Vinted','https://www.vinted.it/catalog?search_text='+v,true]
+  ].map(([l,h,u])=>`<a href="${h}" target="_blank" rel="noopener" class="${u?'used':''}">${l}</a>`).join('');
+}
+
+function render(r){
+  const words = String(r.styleName||'').trim().split(' ');
+  const last = words.pop();
+  $('vibe').innerHTML = `
+    ${r.demo ? '<span class="demo">Esempio</span>' : ''}
+    <div class="eyebrow">Il tuo tipo è</div>
+    <h2 id="vn">${esc(words.join(' '))} <em>${esc(last)}</em></h2>
+    <p>${esc(r.description)}</p>
+    <div class="pal" aria-label="Palette">${(r.palette||[]).slice(0,5).map(c=>`<div style="background:${/^#[0-9a-f]{3,8}$/i.test(c)?c:'#888'}" title="${esc(c)}"></div>`).join('')}</div>
+    <div class="keys">${(r.pieces||[]).map(p=>`<div><span>${esc(p.name)}</span><span>${esc(p.category||'')}</span></div>`).join('')}</div>`;
+  $('chEyebrow').textContent = r.demo ? 'I capi · esempio' : 'I capi';
+  $('ch').textContent = `${(r.pieces||[]).length} pezzi da cercare`;
+  $('list').innerHTML = (r.pieces||[]).map((p,i)=>`
+    <article class="card">
+      <div class="card-top">
+        <div class="ph" aria-hidden="true">${ICONS[p.category] || ICONS.maglia}</div>
+        <div class="info">
+          <div class="cat">${esc(p.category||'capo')}</div>
+          <h3>${esc(p.name)}</h3>
+          <p>${esc(p.why)}</p>
+        </div>
+      </div>
+      <div class="prods" id="prods${i}" aria-label="Prodotti per ${esc(p.name)}"><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
+      <div class="shops">${shopLinks(p)}</div>
+    </article>`).join('');
+  $('tip').innerHTML = `<div class="eyebrow">Consiglio dello stylist</div><p>${esc(r.tip)}</p>`;
+  loadProducts(r.pieces||[]);
+}
+
+async function loadProducts(pieces){
+  const my = ++runId;
+  await Promise.all(pieces.map(async (p,i)=>{
+    const box = $('prods'+i);
+    try{
+      const r = await fetch(`/api/search?q=${enc(p.ebay || p.query || p.name)}&condition=${condition}`);
+      const d = await r.json();
+      if (my !== runId) return;
+      if (!r.ok){
+        box.innerHTML = `<div class="none">${d.error==='missing_key' ? 'Foto prodotti non attive: mancano le chiavi eBay.' : 'Foto non disponibili ora. Usa i link qui sotto.'}</div>`;
+        return;
+      }
+      if (!d.items.length){ box.innerHTML = '<div class="none">Nessun risultato su eBay. Prova i negozi qui sotto.</div>'; return; }
+      box.innerHTML = d.items.map(it=>`
+        <a class="prod" href="${esc(it.url)}" target="_blank" rel="noopener">
+          <div class="img"><img src="${esc(it.image)}" alt="${esc(it.title)}" loading="lazy"></div>
+          <div class="c">${esc(it.condition||'')} · eBay</div>
+          <div class="t">${esc(it.title)}</div>
+          <div class="p">${esc(it.price||'')}</div>
+        </a>`).join('');
+    }catch(_){
+      if (my === runId) box.innerHTML = '<div class="none">Foto non disponibili ora. Usa i link qui sotto.</div>';
+    }
+  }));
+}
+
+// Riduce le foto reference a max 1024px JPEG prima dell'invio
+function shrink(file){
+  return new Promise((ok, ko)=>{
+    const img = new Image(); const url = URL.createObjectURL(file);
+    img.onload = ()=>{
+      const k = Math.min(1, 1024 / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width*k); c.height = Math.round(img.height*k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      ok(c.toDataURL('image/jpeg', 0.82));
+    };
+    img.onerror = ()=>{ URL.revokeObjectURL(url); ko(new Error('bad image')); };
+    img.src = url;
+  });
+}
+
+function renderRefs(){
+  const box = $('refs'), add = $('addRef');
+  box.querySelectorAll('.ref').forEach(n=>n.remove());
+  refs.forEach((r,i)=>{
+    const d = document.createElement('div');
+    d.className = 'ref';
+    d.innerHTML = `<img alt="Reference ${i+1}" src="${r.dataUrl}"><button type="button" aria-label="Rimuovi reference ${i+1}">×</button>`;
+    d.querySelector('button').onclick = ()=>{ refs.splice(i,1); renderRefs(); };
+    box.insertBefore(d, add);
+  });
+  add.hidden = refs.length >= 3;
+}
+
+$('refInput').addEventListener('change', async e=>{
+  for (const f of e.target.files){
+    if (refs.length >= 3) break;
+    try{ refs.push({dataUrl: await shrink(f)}); }catch(_){}
+  }
+  e.target.value = '';
+  renderRefs();
+});
+
+document.querySelectorAll('.seg button').forEach(b=>{
+  b.onclick = ()=>{ condition = b.dataset.cond; document.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed', String(x===b))); };
+});
+
+const ERR = {
+  missing_key:'Analisi AI non attiva: manca la chiave Gemini nelle impostazioni del sito. Sotto vedi l’esempio.',
+  rate_limited:'Troppe richieste ravvicinate. Riprova tra un minuto.',
+  bad_output:'Risposta incompleta. Premi di nuovo "Trova il mio tipo".'
+};
+
+$('form').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const desc = $('desc').value.trim();
+  const st = $('status'), btn = $('go');
+  st.classList.remove('err');
+  if (!desc && !refs.length){ st.textContent = 'Scrivi due parole sullo stile o carica almeno una foto.'; st.classList.add('err'); return; }
+  btn.disabled = true;
+  st.textContent = 'Sto studiando il tuo tipo…';
+  try{
+    const r = await fetch('/api/analyze', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ desc, budget:$('budget').value.trim(), size:$('size').value.trim(), condition, images: refs.map(x=>x.dataUrl) })
+    });
+    const d = await r.json().catch(()=>({error:'bad_output'}));
+    if (!r.ok) throw d;
+    render(d);
+    st.textContent = 'Fatto. Scorri per vedere i capi.';
+    $('vibe').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+  }catch(err){
+    st.textContent = ERR[err && err.error] || 'Qualcosa è andato storto. Riprova tra poco.';
+    st.classList.add('err');
+  }finally{
+    btn.disabled = false;
+  }
+});
+
+render(DEMO);
+renderRefs();
+})();
+</script>
+
+</body>
+</html>
