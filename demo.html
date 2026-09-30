@@ -11,6 +11,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--display)}
 .still .side{display:none}
+.still *{transition:none!important;animation:none!important}
+.still .caret{display:none}
 .stage{min-height:100vh;display:flex;align-items:center;justify-content:center;gap:48px;padding:24px;flex-wrap:wrap}
 .side{max-width:360px;display:flex;flex-direction:column;gap:14px}
 .side .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
