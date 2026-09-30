@@ -10,7 +10,8 @@ Budget totale indicativo: ${budget || 'non indicato'} euro. Taglie: ${size || 'n
 
 Rispondi SOLO con un oggetto JSON, in italiano, con questa forma:
 {"styleName": "nome evocativo dello stile, 2-4 parole", "description": "due frasi su cosa lo caratterizza", "palette": ["#hex", 5 colori], "pieces": [{"name": "nome del capo", "category": "giacca|pantaloni|scarpe|maglia|accessorio", "why": "una frase sul perché funziona", "query": "parole chiave di ricerca per negozi online italiani (taglio, materiale, colore, uomo/donna)", "ebay": "parole chiave brevi per eBay, 3-5 parole, anche brand adatti al budget", "vinted": "parole chiave per Vinted", "photo": "3-5 parole IN INGLESE per trovare una foto stock del solo capo, molto descrittive (es. black leather biker jacket)"}], "tip": "un consiglio di stile breve e concreto"}
-Da 4 a 6 capi, i più importanti per ottenere il look. Niente prezzi inventati.`;
+Da 4 a 6 capi, i più importanti per ottenere il look. Niente prezzi inventati.
+Regola per le parole chiave: sono capi di MODA, non abbigliamento tecnico o sportivo. Non usare mai parole come "biker", "moto", "motociclista", "rider" (portano a giacche da moto con protezioni): per una giacca in pelle stile rock scrivi per esempio "giubbotto pelle nera uomo chiodo slim". Aggiungi sempre "uomo" o "donna" se si capisce dal contesto.`;
 }
 
 export default async function handler(req, res) {

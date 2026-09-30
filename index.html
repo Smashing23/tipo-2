@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Tipo</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
 /* Layout: una colonna da telefono (max 440px), tre blocchi in sequenza: reference → tipo → capi. Look deliberato e unico (brand Tipo), niente tema scuro separato. */
 :root{
@@ -23,7 +23,7 @@ button,input,textarea{font-family:var(--body)}
 :focus-visible{outline:2px solid var(--rust);outline-offset:2px}
 .eyebrow{font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
 .top{display:flex;justify-content:space-between;align-items:center}
-.word{font-family:var(--display);font-size:32px;letter-spacing:-.5px}
+.word{font-size:32px}
 .word span{color:var(--rust)}
 .badge{font-size:12px;padding:4px 10px;border-radius:12px;border:1px solid var(--line2);color:var(--muted)}
 .hero{display:flex;flex-direction:column;gap:10px}
@@ -105,12 +105,73 @@ textarea{border:1px solid var(--ink);border-radius:12px;background:var(--paper);
 .card .ph .credit{position:absolute;right:8px;bottom:8px;font-size:10px;padding:3px 7px;border-radius:8px;background:rgba(20,20,19,.72);color:#F4F1EA;text-decoration:none}
 </style>
 
+<style>
+/* Direzione: club-poster monocromo (energia da locandina elettronica) + griglia prodotti da e-commerce. Bordi netti, niente arrotondamenti, etichette in mono. */
+:root{
+  --ivory:#FFFFFF; --paper:#FFFFFF; --ink:#0A0A0A; --muted:#5A5A5A; --line:#E6E6E6; --line2:#0A0A0A;
+  --rust:#0A0A0A; --rust-soft:#FFFFFF; --sand:#F2F2F2; --moss:#0A0A0A;
+  --night-muted:#9A9A9A; --night-text:#D9D9D9; --night-line:#262626;
+  --display:'Archivo',Helvetica,Arial,sans-serif; --body:'Archivo',Helvetica,Arial,sans-serif; --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+body{font-family:var(--body);font-variation-settings:"wdth" 100}
+.app{gap:32px;padding-top:0}
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em}
+.eyebrow,.cat,.badge,.demo,.prod .c,.q,.foot,.shops a,.seg button,.chip,.keys span:last-child{font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em}
+.eyebrow{font-size:11px;font-weight:500}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--ivory);padding:14px 0;border-bottom:2px solid var(--ink)}
+.badge{border-radius:0;border-color:var(--ink);color:var(--ink);font-size:10px}
+.hero h1{font-size:46px;line-height:.95;font-variation-settings:"wdth" 75;text-transform:uppercase;font-weight:900}
+.hero h1 em{font-style:normal;background:var(--ink);color:var(--ivory);padding:0 .12em}
+.add,.ref,textarea,.chip,.seg,.cta,.vibe,.card,.ph,.prod .img,.shops a,.tip,.pal div{border-radius:0!important}
+textarea{border:2px solid var(--ink);background:#fff}
+.chip{border:1px solid var(--ink);font-size:11px}
+.seg{border:1px solid var(--ink)}
+.cta{height:56px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-size:14px}
+.cta:hover{background:#262626}
+.vibe{padding:28px 20px}
+.vibe h2{font-size:52px;font-variation-settings:"wdth" 70;text-transform:uppercase;font-weight:900;line-height:.9}
+.vibe h2 em{font-style:normal;color:#fff;-webkit-text-stroke:1.5px #fff;color:transparent}
+.vibe p{font-size:15px}
+.keys span:first-child{font-family:var(--display);font-weight:700;font-size:17px}
+.keys span:last-child{font-size:10px}
+.sec h2{font-size:30px;text-transform:uppercase;font-variation-settings:"wdth" 75;font-weight:900}
+.card{border:0;border-top:2px solid var(--ink);padding:16px 0 0;background:transparent}
+.card .ph{aspect-ratio:4/5}
+.card .ph .credit{border-radius:0;background:#0A0A0A;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
+.info h3{font-size:22px;font-weight:800}
+.cat{font-size:10px}
+.prods{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px;overflow:visible}
+.prod{flex:none;position:relative}
+.prod .img{width:100%;height:auto;aspect-ratio:3/4;background:var(--sand)}
+.prod .t{font-size:13px}
+.prod .p{font-size:15px;font-weight:800}
+.prod .c{font-size:10px;color:var(--muted)}
+.heart{position:absolute;top:8px;right:8px;width:36px;height:36px;border:0;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.heart[aria-pressed="true"] svg{fill:#0A0A0A}
+.shops{gap:0;border:1px solid var(--ink)}
+.shops a{border:0;border-right:1px solid var(--ink);min-height:44px;font-size:11px}
+.shops a:last-child{border-right:0}
+.shops a.used{color:var(--ink)}
+.shops a.used:hover{background:var(--ink);color:#fff}
+.tip p{font-family:var(--display);font-weight:700;font-size:20px}
+.tip .eyebrow{color:#9A9A9A}
+/* Logo */
+.logo{display:inline-flex;align-items:center;text-decoration:none;color:var(--ink)}
+.logo-a{font-family:var(--display);font-weight:900;font-size:26px;font-variation-settings:"wdth" 125;letter-spacing:-.03em;background:var(--ink);color:#fff;padding:2px 8px 3px;line-height:1}
+.logo-b{font-family:var(--mono);font-weight:600;font-size:22px;letter-spacing:-.02em}
+.logo-b i{font-style:normal;opacity:.35}
+.logo-c{font-family:var(--display);font-weight:900;font-size:30px;font-variation-settings:"wdth" 62;letter-spacing:.01em;line-height:.9;text-transform:uppercase;display:flex;align-items:flex-start;gap:3px}
+.logo-c sup{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.05em;margin-top:2px}
+.logo-d{display:inline-flex;align-items:stretch;border:2px solid var(--ink);font-family:var(--display);font-weight:900;font-size:20px;line-height:1;text-transform:uppercase;font-variation-settings:"wdth" 100}
+.logo-d span{padding:4px 7px}
+.logo-d span:first-child{background:var(--ink);color:#fff}
+</style>
 </head>
 <body>
 
 <div class="app">
   <div class="top">
-    <div class="word">tipo<span>.</span></div>
+    <div class="word"><a class="logo" href="/" aria-label="Tipo, home"><span class="logo-d"><span>T</span><span>ipo</span></span></a></div>
     <span class="badge">prototipo</span>
   </div>
 
@@ -179,7 +240,7 @@ const DEMO = {
   description:"Indie sleaze rivisto: tagli sartoriali stretti alla Hedi Slimane, pelle vissuta, nero su nero. Elegante ma con un'aria da backstage.",
   palette:['#0A0A0A','#3B3A38','#8C8A85','#F2F0EB','#B5B8BC'],
   pieces:[
-    {name:'Biker in pelle slim',photo:'black leather biker jacket',category:'giacca',why:'Pelle vissuta e zip asimmetrica: il capo che fa l’ottanta per cento del look.',query:'giacca biker pelle nera slim uomo',ebay:'giacca biker pelle nera uomo',vinted:'allsaints cargo giacca pelle'},
+    {name:'Biker in pelle slim',photo:'black leather biker jacket',category:'giacca',why:'Pelle vissuta e zip asimmetrica: il capo che fa l’ottanta per cento del look.',query:'giubbotto pelle nera uomo chiodo slim',ebay:'giubbotto pelle nera uomo chiodo',vinted:'allsaints cargo giacca pelle'},
     {name:'Skinny jeans neri',photo:'black skinny jeans men',category:'pantaloni',why:'Vita bassa e gamba stretta, nero pieno o appena slavato.',query:'skinny jeans nero vita bassa uomo',ebay:'nudie tight terry',vinted:'nudie tight terry'},
     {name:'Chelsea con tacco cubano',photo:'black chelsea boots heel',category:'scarpe',why:'Il dettaglio più Slimane: punta affusolata e tacco alto.',query:'chelsea boots tacco cubano nero uomo',ebay:'chelsea boots tacco cubano nero',vinted:'saint laurent wyatt'},
     {name:'T-shirt bianca aderente',photo:'white t-shirt men',category:'maglia',why:'Semplice e un po’ vissuta, sotto la giacca.',query:'t-shirt bianca slim cotone uomo',ebay:'t-shirt bianca slim uomo',vinted:'t-shirt bianca slim'},
@@ -217,7 +278,7 @@ function render(r){
   $('list').innerHTML = (r.pieces||[]).map((p,i)=>`
     <article class="card">
       <div class="card-top">
-        <div class="ph" id="ph${i}">${ICONS[p.category] || ICONS.maglia}</div>
+        <div class="ph" id="ph${i}" hidden></div>
         <div class="info">
           <div class="cat">${esc(p.category||'capo')}</div>
           <h3>${esc(p.name)}</h3>
@@ -242,6 +303,8 @@ async function loadPhotos(pieces){
       const box = $('ph'+i);
       if (!box || !d.image) return;
       box.innerHTML = `<img src="${esc(d.image)}" alt="Esempio: ${esc(p.name)}" loading="lazy"><a class="credit" href="${esc(d.pageUrl)}" target="_blank" rel="noopener">Foto: ${esc(d.photographer)} · Pexels</a>`;
+      box.dataset.set = 'pexels';
+      box.hidden = false;
     }catch(_){}
   }));
 }
@@ -258,7 +321,13 @@ async function loadProducts(pieces){
         box.innerHTML = `<div class="none">${d.error==='missing_key' ? 'Foto prodotti non attive: manca la chiave SERPAPI_API_KEY.' : 'Foto non disponibili ora. Usa i link qui sotto.'}</div>`;
         return;
       }
-      if (!d.items.length){ box.innerHTML = '<div class="none">Nessun risultato su eBay. Prova i negozi qui sotto.</div>'; return; }
+      if (!d.items.length){ box.innerHTML = '<div class="none">Nessun prodotto trovato. Prova i negozi qui sotto.</div>'; return; }
+      const hero = $('ph'+i), first = d.items[0];
+      if (hero && !hero.dataset.set){
+        hero.innerHTML = `<img src="${esc(first.image)}" alt="${esc(first.title)}" loading="lazy"><a class="credit" href="${esc(first.url)}" target="_blank" rel="noopener">${esc(first.source||'Negozio')}</a>`;
+        hero.dataset.set = 'shop';
+        hero.hidden = false;
+      }
       box.innerHTML = d.items.map(it=>`
         <a class="prod" href="${esc(it.url)}" target="_blank" rel="noopener">
           <div class="img"><img src="${esc(it.image)}" alt="${esc(it.title)}" loading="lazy"></div>
@@ -352,5 +421,19 @@ renderRefs();
 })();
 </script>
 
+<script>
+(function(){
+  const heart='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>';
+  new MutationObserver(()=>{
+    document.querySelectorAll('.prod:not([data-h])').forEach(p=>{
+      p.dataset.h='1';
+      const b=document.createElement('button');
+      b.type='button';b.className='heart';b.setAttribute('aria-label','Salva');b.setAttribute('aria-pressed','false');b.innerHTML=heart;
+      b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();b.setAttribute('aria-pressed',String(b.getAttribute('aria-pressed')!=='true'));});
+      const img=p.querySelector('.img'); img.style.position='relative'; img.appendChild(b);
+    });
+  }).observe(document.body,{subtree:true,childList:true});
+})();
+</script>
 </body>
 </html>
